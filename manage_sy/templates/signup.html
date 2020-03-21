@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+
+<html lang="en">
+
+{% block title %}Sign Up{% endblock title %}
+
+{% block content %}
+<h2>Sign Up</h2>
+
+  <form method="post" novalidate>
+  {% csrf_token %}
+
+ {% include 'includes/bs4_form_template.html' with form=form %}
+
+
+
+
+  <button class="btn btn-success" type="submit">Sign Up</button>
+</form>
+{% endblock content %}
+</html>

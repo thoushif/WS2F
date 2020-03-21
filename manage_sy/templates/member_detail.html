@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="profile-card">
+  <img src="{% static 'manage_sy/profilepics/profile_avatar_contact_account_user_default-neutral.png' %}" alt="profile_pic" style="width:100%">
+  <h1>{{ member.nickname }} </h1>
+  <p class="profile-title">  <p>{% if not isCompanionProfile %} {{ user.username }} |
+    {% else %} {{ companion_name }}
+    {% endif  %} | {{ member.email }}  </p>
+  <p class="profile-title"> {{ member.gender }} | {{ member.date_of_birth }} </p>
+  <p>{% if member.is_first_registered %} Created <i>  {{ member.home_name }}  </i>
+    {% else %} Joined <i> {{ companion_home }} </i>
+    {% endif  %}
+
+
+   on {{member.date_joined}}</p>
+
+  <p>{% if not member.companion_registered %} Connecting with
+    {% else %} Connected to
+    {% endif  %}
+    {{member.companion_name}} <small> {{member.companion_email}}   </small></p>
+ {% if not isCompanionProfile %} <a href="{% url 'manage_sy:member_edit' member.pk %}"><button >Edit </button></a>    {% endif  %}
+</div>
+
+
+{% endblock content %}
+</html>
+

@@ -1,0 +1,12 @@
+id,name,assigned_to,type,happened_on,created_date,updated_date,color,active,image_clue,notes,owner_id,subType_id
+1,Really?,wife of scott,R,2020-03-15,2020-03-15 00:49:23,2020-03-15 00:50:19.980312,R,1,static/manage_sy/profilepics/profile_avatar_contact_account_user_default-neutral.png,Really Scott wife?,3,1
+2,Really2,wife of scott,R,2020-03-14,2020-03-15 00:51:06,2020-03-15 00:51:45.751977,R,0,static/manage_sy/profilepics/profile_avatar_contact_account_user_default-neutral.png,Really 2 scott wife?,3,2
+3,Really?,wife of scott,R,2020-03-15,2020-03-15 00:49:23,2020-03-15 00:50:19.980312,R,1,static/manage_sy/profilepics/profile_avatar_contact_account_user_default-neutral.png,Really Scott wife?,4,1
+4,Really2,wife of scott,R,2020-03-14,2020-03-15 00:51:06,2020-03-15 00:51:45.751977,R,0,static/manage_sy/profilepics/profile_avatar_contact_account_user_default-neutral.png,Really 2 scott wife?,4,2
+5,Really?,wife of scott,R,2020-03-15,2020-03-15 00:49:23,2020-03-15 00:50:19.980312,R,1,static/manage_sy/profilepics/profile_avatar_contact_account_user_default-neutral.png,Really Scott wife?,3,1
+6,Really2,wife of williams,R,2020-03-14,2020-03-15 00:51:06,2020-03-15 00:51:45.751977,R,0,static/manage_sy/profilepics/profile_avatar_contact_account_user_default-neutral.png,"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.
+Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.",2,2
+7,Really?,wife of williams,R,2020-03-15,2020-03-15 00:49:23,2020-03-15 00:50:19.980312,R,1,static/manage_sy/profilepics/profile_avatar_contact_account_user_default-neutral.png,"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.
+Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.",2,1
+8,Really2,wife of williams,R,2020-03-14,2020-03-15 00:51:06,2020-03-15 00:51:45.751977,R,0,static/manage_sy/profilepics/profile_avatar_contact_account_user_default-neutral.png,"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Maecenas porttitor congue massa. Fusce posuere, magna sed pulvinar ultricies, purus lectus malesuada libero, sit amet commodo magna eros quis urna.
+Nunc viverra imperdiet enim. Fusce est. Vivamus a tellus.",2,2

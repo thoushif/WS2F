@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load custom_tags %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<div class="jumbotron">
+
+    {% if not user.is_authenticated %}
+    <p class="lead">
+        Hello, go ahead and login to see your sy list..
+        If you are new Register here!!
+    </p>
+    {% else %}
+    <div class="container">
+        <h2>{{ user.nickname }},
+            {% if companion_cards is None %}
+            items you wrote!! <sup>{{user.syitem_set.count}}</sup>
+            <div class="float-right circle" data-toggle="modal" data-target="#modalnewitemform">
+                <div class='horizontal-plus'></div>
+                <div class='vertical-plus'></div>
+            </div>
+            {% else %}
+                {% if user.companion_registered %}
+                    your <i>{{companion_name}}</i> wrote!! <sup>{{companion_cards.count}}</sup>
+                {% else %}
+                    {{companion_name}} not yet registered, remind?
+                {% endif %}
+            {% endif %}
+
+        </h2>
+        <br>
+        {% if companion_cards is None %}
+        {% include "includes/sy_item.html" with items=user.syitem_set.all|sort_by:'-updated_date' only %}
+        {% else %}
+            {% if user.companion_registered %}
+                {% include "includes/sy_item.html" with items=companion_cards only %}
+            {% endif %}
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+<div class="modal fade" id="modalnewitemform" tabindex="-1" role="dialog" aria-labelledby="modalnewitemformTitle" aria-hidden="true" >
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" id="new-item-form">
+
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+</html>

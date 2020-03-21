@@ -1,0 +1,32 @@
+{% load static %}
+ <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="card-deck card-group-scroll" >
+    {% for item in items %}
+        <div class="card border-dark mb-2" data-toggle="modal" data-target="#exampleModalCenter" data-whatever="{{item.id}}">
+          <img class="card-img-top img-fluid" src="" alt="Card image cap">
+          <div class="card-body">
+            <h4 class="card-title">{{ item.name }}    {{item.get_response_type_display|default_if_none:"" }}     </h4>
+               <p class="card-text"> - written to {{ item.assigned_to }} as happened on {{ item.happened_on|default_if_none:"Don't know" }}</p>
+            <p class="card-text"><small class="text-muted">{{ item.created_date }}</small></p>
+          </div>
+        </div>
+    {% endfor %}
+
+</div>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>
