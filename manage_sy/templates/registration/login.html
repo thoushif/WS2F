@@ -10,6 +10,7 @@
     {% csrf_token %}
     {% include 'includes/bs4_form_template.html' with form=form %}
     <button class="btn btn-success ml-2" type="submit">Log In</button>
+    <a href="{% url 'manage_sy:password_reset_form' %}">Forgot Password</a>
 </form>
 {% endblock content %}
 </html>
