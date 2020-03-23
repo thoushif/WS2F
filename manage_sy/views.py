@@ -12,6 +12,8 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.shortcuts import get_object_or_404
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 def index(request):
@@ -20,8 +22,30 @@ def index(request):
 
 class SignUpView(CreateView):
     form_class = MemberCreationForm
-    success_url = reverse_lazy('login')
     template_name = 'signup.html'
+
+    def form_valid(self, form):
+        member = form.save(commit=False)
+        email_id = form.cleaned_data.get('email')
+        # check if this email id is any companion's email
+        if Member.objects.filter(companion_email=email_id).exists():
+            orig_member = Member.objects.filter(companion_email=email_id).first()
+            orig_member.companion_registered = True
+            member.companion_registered = True
+            orig_member.companion_id = member
+            member.companion_id = orig_member
+            member.is_first_registered = False
+            member.home_name = orig_member.home_name
+        member.save()
+        orig_member.save()
+        sendemail([email_id])
+        return HttpResponseRedirect('/')
+
+
+def get_companion_cards(user_id):
+    companion = Member.objects.filter(companion_id_id=user_id).first()
+    if companion is not None:
+        return SyItem.objects.filter(owner_id=companion.id)
 
 
 class CardsInboxView(TemplateView):
@@ -29,23 +53,18 @@ class CardsInboxView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        companion_cards, companion_name = self.get_companion_cards(self.request.user.id)
-        context['companion_cards'] = companion_cards.order_by('-updated_date')
-        context['companion_name'] = companion_name
-        return context
-
-    def get_companion_cards(self, user_id):
-        companion = Member.objects.filter(companion_id_id=user_id).first()
-        if companion is not None:
-            return SyItem.objects.filter(owner_id=companion.id), companion.nickname
+        companion_cards = get_companion_cards(self.request.user.id)
+        if companion_cards is not None:
+            context['companion_cards'] = companion_cards.order_by('-updated_date')
         else:
-            return None, None
+            context['companion_cards'] = None
+        context['cards_for_you_flow'] = True
+        return context
 
 
 class CardsPostedView(TemplateView):
     template_name = 'home.html'
     ordering = ['-updated_date']
-
 
 
 class MemberDetailView(LoginRequiredMixin, DetailView):
@@ -88,6 +107,7 @@ class MemberCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        sendemail(list(self.request.user.sendemail))
         return super().form_valid(form)
 
 
@@ -143,7 +163,7 @@ class SyItemCreateView(CreateView):
         sy_item.owner = Member.objects.filter(id=self.request.user.id).first()
         sy_item.active = True
         sy_item.color = sy_item.type
-        sy_item.assigned_to = Member.objects.filter(companion_id_id=self.request.user.id).first().nickname
+        sy_item.assigned_to = Member.objects.filter(id=self.request.user.id).first().companion_name
         sy_item.save()
         return HttpResponse(render(self.request, 'home.html'))
 
@@ -179,3 +199,10 @@ def syitem_edit(request, pk):
     else:
         form = SyItemForm(instance=sy_item)
     return render(request, 'includes/modal-update-item-form.html', {'form': form})
+
+
+def sendemail(recipient_list):
+    subject = 'Thank you for registering to our site'
+    message = ' it  means a world to us '
+    email_from = settings.EMAIL_HOST_USER
+    send_mail(subject, message, email_from, recipient_list )

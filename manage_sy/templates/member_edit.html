@@ -5,8 +5,9 @@
 {% block content %}
     <h1>Edit</h1>
     <form action="" method="post">{% csrf_token %}
-      {{ form.as_p }}
-    <button class="btn btn-info ml-2" type="submit">Update</button>
+ {% include 'includes/bs4_form_template.html' with form=form %}
+        <button class="btn btn-info ml-2" type="submit">Update</button>
+        <button class="btn btn-secondary ml-2">Cancel</button>
 </form>
 {% endblock content %}
 </html>

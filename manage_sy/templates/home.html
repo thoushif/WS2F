@@ -16,23 +16,23 @@
     {% else %}
     <div class="container">
         <h2>{{ user.nickname }},
-            {% if companion_cards is None %}
-            items you wrote!! <sup>{{user.syitem_set.count}}</sup>
+            {% if not cards_for_you_flow  %}
+            items you wrote <sup>({{user.syitem_set.count|default:"Nothing yet"}})</sup>!!
             <div class="float-right circle" data-toggle="modal" data-target="#modalnewitemform">
                 <div class='horizontal-plus'></div>
                 <div class='vertical-plus'></div>
             </div>
             {% else %}
                 {% if user.companion_registered %}
-                    your <i>{{companion_name}}</i> wrote!! <sup>{{companion_cards.count}}</sup>
+                    your <i>{{user.companion_name}}</i> wrote <sup>({{companion_cards.count|default:"Nothing yet"}})</sup>!!
                 {% else %}
-                    {{companion_name}} not yet registered, remind?
+                    {{user.companion_name}} not yet registered, remind?
                 {% endif %}
             {% endif %}
 
         </h2>
         <br>
-        {% if companion_cards is None %}
+        {% if not cards_for_you_flow %}
         {% include "includes/sy_item.html" with items=user.syitem_set.all|sort_by:'-updated_date' only %}
         {% else %}
             {% if user.companion_registered %}

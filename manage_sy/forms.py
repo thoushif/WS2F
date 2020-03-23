@@ -8,7 +8,11 @@ class MemberCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = Member
-        fields = ('username', 'email', 'nickname', 'date_of_birth', 'companion_email', 'companion_name', 'gender', 'profile_pic', 'home_name')
+        fields = ('username', 'email', 'first_name', 'last_name', 'nickname', 'date_of_birth', 'companion_email', 'companion_name', 'gender', 'profile_pic', 'home_name')
+
+    def clean_email(self):
+        if Member.objects.filter(email=self.cleaned_data.get('email')).exists():
+            raise forms.ValidationError("Email is already registered, try Forgot Password if this email is yours!")
 
 
 class MemberChangeForm(UserChangeForm):
