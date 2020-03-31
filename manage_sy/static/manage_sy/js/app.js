@@ -21,6 +21,7 @@ $(document).ready(function(){
     })
 
     $('#modalnewitemform').on('show.bs.modal', function (event) {
+    backdrop: 'static'
 
     var cardFrom = $(event.relatedTarget) // Button that triggered the modal
     var itemData = cardFrom.data('whatever') // Extract info from data-* attributes
@@ -48,6 +49,17 @@ $(document).ready(function(){
       });
     })
 
+
+
+    $('#id_date_of_birth').datepicker({
+        clearBtn: true,
+        autoclose: true
+    });
+
+
+
+
+
     function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -64,4 +76,17 @@ $(document).ready(function(){
         return cookieValue;
     }
 
+
 });
+
+
+function checkNewEditCancel(){
+    var ret =  confirm('Do you really want to close before sending!?');
+    if(ret){
+         $('#modalnewitemform').modal('hide');
+         return true;
+    }else{
+         $('#modalnewitemform').modal('show');
+         return false;
+    }
+}

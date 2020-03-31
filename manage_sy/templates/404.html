@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+{% extends 'base.html' %}
+{% load custom_tags %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<div class="jumbotron">
+ <h1>Oops..</h1>
+ <h3>we can't find the page you are looking for</h3>
+ <p>Error Code: 404</p>
+ <p>here is where you get to  <a class="navbar-brand" href="{% url 'home' %}"> HOME</a> </p>
+
+</div>
+
+
+{% endblock content %}
+</html>

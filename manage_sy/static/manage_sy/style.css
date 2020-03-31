@@ -85,3 +85,7 @@
 .profile-card button:hover, .profile-card a:hover {
   opacity: 0.7;
 }
+
+.carousel-item > img {
+   height: 400px;
+}

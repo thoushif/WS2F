@@ -1,22 +1,14 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
-
-
+{% block title %} New here? Fill this!  {% endblock title %}
 <html lang="en">
 
-{% block title %}Sign Up{% endblock title %}
-
 {% block content %}
-<h2>Sign Up</h2>
-
+<h2>Sign Up</h2> <a href="{% url 'login' %}" class="btn btn-light">Already registered?? log in instead!</a>
   <form method="post" novalidate>
   {% csrf_token %}
-
- {% include 'includes/bs4_form_template.html' with form=form %}
-
-
-
-
+    {{ form|crispy }}
   <button class="btn btn-success" type="submit">Sign Up</button>
 </form>
 {% endblock content %}

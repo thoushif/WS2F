@@ -24,8 +24,10 @@ SECRET_KEY = 'ccyssw#zf#b@o$2g)p(04r8!ng^7zp3gjxgz_&xz$#bdqmhd-3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
+# DEBUG = False
+#
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['allaboutapology.pythonanywhere.com', 'www.allaboutapology.pythonanywhere.com', '*']
 
 
 # Application definition
@@ -39,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +68,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -134,3 +137,8 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'all.about.sorry.2020@gmail.com'
 EMAIL_HOST_PASSWORD = 'allAboutSorry'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

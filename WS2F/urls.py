@@ -17,6 +17,12 @@ from django.urls import path, include
 from django.contrib import admin
 from manage_sy.views import CardsInboxView
 
+
+handler404 = 'manage_sy.views.handler404'
+handler500 = 'manage_sy.views.handler500'
+handler403 = 'manage_sy.views.handler403'
+handler400 = 'manage_sy.views.handler400'
+
 urlpatterns = [
     path('', CardsInboxView.as_view(template_name='home.html'), name='home'),
     path('admin/', admin.site.urls),

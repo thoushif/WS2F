@@ -1,5 +1,6 @@
+{% load crispy_forms_tags %}
 
- <form action="{% url 'manage_sy:item_new'  %}" method="post">{% csrf_token %}
+ <form action="{% url 'manage_sy:item_new'  %}" method="post"  onclose="return confirm('Do you really want to close before sending!?');">{% csrf_token %}
   <div class="modal-header">
     <h5 class="modal-title" id="modalnewitemformTitle"> create your item below</h5>
 
@@ -9,11 +10,11 @@
   </div>
   <div class="modal-body">
 
- {% include 'includes/bs4_form_template.html' with form=form %}
+    {{ form|crispy }}
 
 
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-secondary" onclick="checkNewEditCancel()">Close</button>
     <button type="submit" class="btn btn-primary">Send</button>
   </div></form>

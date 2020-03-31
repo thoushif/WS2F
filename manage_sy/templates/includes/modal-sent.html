@@ -1,8 +1,7 @@
 
 
-
   <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLongTitle">{{ item.name }} <small>as happened on {{ item.happened_on }}</small> </h5>
+    <h5 class="modal-title" id="exampleModalLongTitle">{{ item.name }} <small>as happened  {{ item.get_happened_on_display|lower }}</small> </h5>
 
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -15,7 +14,7 @@
         <div class="float-right"> <span>- written to {{ item.assigned_to }}</span></div>
         <p class="card-text"><small class="text-muted">{{ item.updated_date }}</small></p>
   </div>
-  <div class="modal-footer">
+  <div class="modal-footer {{item.color}}" style="opacity:60%" >
 
 
 

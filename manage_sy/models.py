@@ -5,17 +5,23 @@ from django.urls import reverse
 from django.utils import timezone
 
 
+def user_profilepics_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    return 'static/profilepics/user_{0}/{1}'.format(instance.user.id, filename)
+
+
 class Member(AbstractUser):
     GENDER_CHOICE = [
         ('M', 'Male'),
         ('F', 'Female'),
         ('-', 'Preferred Not to Mention'),
     ]
+    email = models.EmailField(null=False, blank=False)
     nickname = models.CharField(max_length=50, default=' ', null=True, blank=True)
     date_of_birth = models.DateField(blank=True, null=True)  # True makes this field optional
     companion_email = models.EmailField('companion_email', blank=True)
     companion_name = models.CharField(max_length=100, default=' ', null=True, blank=True)
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICE, null=True, blank=True)
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICE, null=False, blank=False, default='-')
     profile_pic = models.CharField(max_length=100,
                                    default="static/manage_sy/profilepics/profile_avatar_contact_account_user_default-neutral.png",
                                    blank=True)
@@ -33,6 +39,8 @@ class ItemSubTypeDomain(models.Model):
     type = models.CharField(max_length=10, choices=ITEM_TYPE, null=True, blank=True)
     subType = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.subType
 
 class SyItem(models.Model):
     ITEM_TYPE = [
@@ -43,14 +51,22 @@ class SyItem(models.Model):
         ('Y', 'Accepted'),
         ('N', 'Rejected'),
     ]
+    HAPPENED_ON_CHOICE = [
+        ('t', 'Today'),
+        ('y', 'Yesterday'),
+        ('w', 'A week ago'),
+        ('m', 'Around a month ago'),
+        ('Y', 'An year ago'),
+        ('-', 'I don''t really remember'),
+    ]
     name = models.CharField(max_length=500, blank=False, null=False, default=' ')
     owner = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
     )
     assigned_to = models.CharField(max_length=100, default=' ')
-    type = models.CharField(max_length=10, choices=ITEM_TYPE, null=True, blank=True)
-    happened_on = models.DateField(blank=True, null=True)  # True makes this field optional
+    type = models.CharField(max_length=10, choices=ITEM_TYPE, null=False, blank=False)
+    happened_on = models.CharField(max_length=10, choices=HAPPENED_ON_CHOICE, null=False, blank=False, default='-')
     created_date = models.DateTimeField(
         default=timezone.now)
     updated_date = models.DateTimeField(auto_now_add=True)
@@ -59,7 +75,7 @@ class SyItem(models.Model):
     image_clue = models.CharField(max_length=1000,
                                    default="static/manage_sy/profilepics/profile_avatar_contact_account_user_default-neutral.png",
                                    blank=True)
-    subType = models.ForeignKey(ItemSubTypeDomain, on_delete=models.DO_NOTHING, related_name='request_types')
+    subType = models.ForeignKey(ItemSubTypeDomain, on_delete=models.DO_NOTHING, related_name='request_types', null=True, blank=True)
 
     notes = models.TextField()
     response_type = models.CharField(max_length=10, choices=RESPONSE_TYPE, null=True, blank=True)

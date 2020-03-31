@@ -1,9 +1,11 @@
 from django.urls import path
 from django.conf.urls import url
-from .views import SignUpView, MemberDetailView, MemberUpdateView, MemberCreateView, CardsInboxView, \
-    CardsPostedView, sy_item_modal_view, SyItemCreateView, SyItemUpdateView, SyItemUpdateView2, CompanionDetailView, sy_item_accept_view, sy_item_reject_view
+from .views import SignUpView, MemberDetailView, MemberUpdateView, MemberUpdateCompanionView, CardsInboxView, \
+    CardsPostedView, sy_item_modal_view, SyItemCreateView, SyItemUpdateView, CompanionDetailView, sy_item_accept_view, sy_item_reject_view
 from django.views.generic.base import TemplateView
 from django.contrib.auth.views import PasswordResetDoneView, PasswordResetConfirmView, PasswordResetView
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'manage_sy'
 urlpatterns = [
@@ -11,6 +13,8 @@ urlpatterns = [
     path('signup/', SignUpView.as_view(), name='signup'),
     path('users/<int:pk>/edit/',
          MemberUpdateView.as_view(), name='member_edit'),
+    path('users/<int:pk>/edit_add_companion/',
+         MemberUpdateCompanionView.as_view(), name='member_edit_add_companion'),
     path('cards/',
          CardsInboxView.as_view(), name='cards_for_you'),
     path('cards-by-you/',
@@ -34,3 +38,7 @@ urlpatterns = [
 
 
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

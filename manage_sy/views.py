@@ -2,9 +2,10 @@ from django.utils import timezone
 
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth import logout
+from django import forms
 from django.shortcuts import render
-from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DetailView, TemplateView
 from .forms import MemberCreationForm, SyItemForm
 from .models import Member, SyItem
@@ -27,6 +28,7 @@ class SignUpView(CreateView):
     def form_valid(self, form):
         member = form.save(commit=False)
         email_id = form.cleaned_data.get('email')
+        profile_pic_image = self.request.FILES['profile_pic_image']
         # check if this email id is any companion's email
         if Member.objects.filter(companion_email=email_id).exists():
             orig_member = Member.objects.filter(companion_email=email_id).first()
@@ -36,8 +38,9 @@ class SignUpView(CreateView):
             member.companion_id = orig_member
             member.is_first_registered = False
             member.home_name = orig_member.home_name
+            orig_member.save()
         member.save()
-        orig_member.save()
+
         sendemail([email_id])
         return HttpResponseRedirect('/')
 
@@ -67,10 +70,13 @@ class CardsPostedView(TemplateView):
     ordering = ['-updated_date']
 
 
-class MemberDetailView(LoginRequiredMixin, DetailView):
+class MemberDetailView(PermissionRequiredMixin, DetailView):
     model = Member
     template_name = 'member_detail.html'
     login_url = 'login'
+
+    def has_permission(self):
+        return self.request.user.id == self.kwargs['pk']
 
 
 class CompanionDetailView(LoginRequiredMixin, DetailView):
@@ -87,29 +93,32 @@ class CompanionDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class MemberUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+class MemberUpdateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Member
     fields = (
-        'username', 'email', 'nickname', 'date_of_birth', 'companion_email', 'companion_name', 'gender', 'profile_pic', 'home_name')
+         'nickname', 'date_of_birth', 'gender', 'profile_pic', 'home_name')
     template_name = 'member_edit.html'
     success_message = "Profile saved successfully"
 
     def get_success_url(self):
         return reverse('home')
 
+    def has_permission(self):
+        return self.request.user.id == self.kwargs['pk']
 
-class MemberCreateView(CreateView):
+
+class MemberUpdateCompanionView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Member
-    template_name = 'member_new.html'
     fields = (
-        'username', 'email', 'nickname', 'date_of_birth', 'companion_email', 'companion_name', 'gender', 'profile_pic', 'home_name')
-    login_url = 'login'
+         'companion_name', 'companion_email')
+    template_name = 'member_edit.html'
+    success_message = "Companion added successfully, they may have to register if not already do so!!"
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        sendemail(list(self.request.user.sendemail))
-        return super().form_valid(form)
+    def get_success_url(self):
+        return reverse('home')
 
+    def has_permission(self):
+        return self.request.user.id == self.kwargs['pk']
 
 def sy_item_modal_view(request):
     if request.method == 'POST' and request.is_ajax():
@@ -123,6 +132,7 @@ def sy_item_accept_view(request, pk):
     sy_item = SyItem.objects.get(pk=pk)
     sy_item.response_type = 'Y'
     sy_item.response_date = timezone.now()
+    sy_item.color = 'bg-success'
     sy_item.save()
     messages.success = sy_item.name + "Accepted!!"
     return HttpResponse(render(request, 'home.html'))
@@ -132,9 +142,33 @@ def sy_item_reject_view(request, pk):
     sy_item = SyItem.objects.get(pk=pk)
     sy_item.response_type = 'N'
     sy_item.response_date = timezone.now()
+    sy_item.color = 'bg-danger'
     sy_item.save()
     return HttpResponse(render(request, 'home.html'))
 
+
+def handler400(request, exception, template_name="400.html"):
+    response = render(request, template_name)
+    response.status_code = 400
+    return response
+
+
+def handler403(request, exception, template_name="403.html"):
+    response = render(request, template_name)
+    response.status_code = 403
+    return response
+
+
+def handler404(request, exception, template_name="404.html"):
+    response = render(request, template_name)
+    response.status_code = 404
+    return response
+
+
+def handler500(request, template_name="500.html"):
+    response = render(request, template_name)
+    response.status_code = 500
+    return response
 
 # class SyItemUpdateView(UpdateView):
 #     model = SyItem
@@ -155,7 +189,11 @@ class SyItemCreateView(CreateView):
     model = SyItem
     success_url = '/manage_sy/modal/item-new/'
     template_name = 'includes/modal-new-item-form.html'
-    fields = ('name', 'type', 'happened_on', 'image_clue', 'notes', 'subType')
+    fields = ('type', 'subType', 'name', 'happened_on', 'notes',)
+
+    widgets = {
+        'type': forms.RadioSelect()
+    }
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -175,30 +213,11 @@ class SyItemUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     fields = ('name', 'type', 'happened_on', 'image_clue', 'notes', 'subType')
     success_url = '/'
     success_message = "Item updated successfully"
-
+    widgets = {
+        'type': forms.RadioSelect()
+    }
     def form_valid(self, form):
         return super().form_valid(form)
-
-
-class SyItemUpdateView2(TemplateView):
-    template_name = 'home.html'
-
-def syitem_edit(request, pk):
-    sy_item = get_object_or_404(SyItem, pk=pk)
-    success_url = 'manage_sy:item_edit'
-
-    if request.method == "POST" and request.is_ajax():
-        form = SyItemForm(instance=sy_item)
-        print('=============in syitem new with form details')
-        print(form.is_valid())
-        if form.is_valid():
-            print('=============in syitem new with form details in')
-            form.save()
-            # return super().form_valid(form)
-            return HttpResponseRedirect(render(request, 'home.html'))
-    else:
-        form = SyItemForm(instance=sy_item)
-    return render(request, 'includes/modal-update-item-form.html', {'form': form})
 
 
 def sendemail(recipient_list):
