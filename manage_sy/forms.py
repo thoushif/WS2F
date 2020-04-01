@@ -23,7 +23,7 @@ class MemberChangeForm(UserChangeForm):
 
     class Meta:
         model = Member
-        fields = ('username', 'email', 'nickname', 'date_of_birth', 'companion_email', 'companion_name', 'gender', 'profile_pic', )
+        fields = ('username', 'email', 'nickname', 'date_of_birth', 'companion_email', 'companion_name', 'gender', )
 
 
 class SyItemForm(forms.ModelForm):

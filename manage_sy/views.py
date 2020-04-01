@@ -28,7 +28,6 @@ class SignUpView(CreateView):
     def form_valid(self, form):
         member = form.save(commit=False)
         email_id = form.cleaned_data.get('email')
-        profile_pic_image = self.request.FILES['profile_pic_image']
         # check if this email id is any companion's email
         if Member.objects.filter(companion_email=email_id).exists():
             orig_member = Member.objects.filter(companion_email=email_id).first()
