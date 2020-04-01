@@ -41,7 +41,7 @@ class SignUpView(CreateView):
             orig_member.save()
         member.save()
 
-        sendemail([email_id])
+        send_email([email_id])
         return HttpResponseRedirect('/')
 
 
@@ -49,6 +49,13 @@ def get_companion_cards(user_id):
     companion = Member.objects.filter(companion_id_id=user_id).first()
     if companion is not None:
         return SyItem.objects.filter(owner_id=companion.id)
+
+
+def send_remind_email(request):
+    email = Member.objects.filter(id=request.user.id).first().companion_email
+    remind_email([email])
+    messages.success = "Reminder sent successfully!"
+    return HttpResponse(render(request, 'home.html'))
 
 
 class CardsInboxView(TemplateView):
@@ -213,15 +220,21 @@ class SyItemUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     fields = ('name', 'type', 'happened_on', 'image_clue', 'notes', 'subType')
     success_url = '/'
     success_message = "Item updated successfully"
-    widgets = {
-        'type': forms.RadioSelect()
-    }
+
     def form_valid(self, form):
         return super().form_valid(form)
 
 
-def sendemail(recipient_list):
+def send_email(recipient_list):
     subject = 'Thank you for registering to our site'
     message = ' it  means a world to us '
+    email_from = settings.EMAIL_HOST_USER
+    send_mail(subject, message, email_from, recipient_list )
+
+
+def remind_email(recipient_list):
+    subject = 'Reminder: Sign up here please at AAA - we can have our fun back'
+    message = ' Dear, I hope you join this site signing up. I feel this help us  connecting back in our lives. Even i' \
+              'f not lets have fun.  '
     email_from = settings.EMAIL_HOST_USER
     send_mail(subject, message, email_from, recipient_list )
