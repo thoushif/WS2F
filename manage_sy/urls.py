@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf.urls import url
 from .views import SignUpView, MemberDetailView, MemberUpdateView, MemberUpdateCompanionView, CardsInboxView, \
-    CardsPostedView, sy_item_modal_view, SyItemCreateView, SyItemUpdateView, CompanionDetailView, sy_item_accept_view, sy_item_reject_view
+    CardsPostedView, sy_item_modal_view, send_remind_email, SyItemCreateView, SyItemUpdateView, CompanionDetailView, sy_item_accept_view, sy_item_reject_view
 from django.views.generic.base import TemplateView
 from django.contrib.auth.views import PasswordResetDoneView, PasswordResetConfirmView, PasswordResetView
 from django.conf import settings
@@ -31,7 +31,7 @@ urlpatterns = [
     path('companion/<int:pk>',
          CompanionDetailView.as_view(), name='companion_detail'),
     # path('users/new/', MemberCreateView.as_view(), name='client_new'),
-
+    path('users/remind/', send_remind_email, name='companion_remind'),
     path('password-reset-form/', PasswordResetView.as_view(), name='password_reset_form'),
     path('password-reset-done-form/', PasswordResetDoneView.as_view(), name='password_reset_done'),
     path('password-reset-confirm/', PasswordResetConfirmView.as_view(), name='password_reset_confirm')

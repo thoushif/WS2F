@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 {% load static %}
+{% load custom_tags %}
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -45,7 +46,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="userMenu"\
               data-toggle="dropdown" aria-haspopup="true" aria-expanded\
               ="false">
-              {{user.nickname}} in <i class="fas fa-home"></i>{{ user.home_name }}
+              {{user.nickname}} in <i class="fas fa-home"></i> {{ user.home_name|default_if_none:"" }}
               </a>
               <div class="dropdown-menu dropdown-menu-right"
               aria-labelledby="userMenu">

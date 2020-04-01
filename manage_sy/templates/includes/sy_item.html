@@ -4,13 +4,13 @@
 <div class="card-deck card-group-scroll" >
     {% for item in items %}
         <div class="card border-dark mb-2" data-toggle="modal" data-target="#exampleModalCenter" data-whatever="{{item.id}}">
-          <img class="card-img-top img-fluid" src="" alt="Card image cap">
+<!--          <img class="card-img-top img-fluid" src="" alt="Card image cap">-->
           <div class="card-body">
-            <h4 class="card-title">{{ item.name }}
+            <h4 class="card-title" style='background-color:  #c8e9ee;border-bottom: 2px solid #999; '>{{ item.name }}
                 {% if item.response_type == 'Y' %}
-                    <button type="button" class="btn btn-outline-success btn-sm" disabled>  Accepted </button>
+                    <button type="button" class="btn btn-outline-success btn-sm float-right" disabled>  Accepted </button>
                 {% elif item.response_type == 'N' %}
-                    <button type="button" class="btn btn-outline-danger btn-sm" disabled> Not Accepted </button>
+                    <button type="button" class="btn btn-outline-danger btn-sm float-right" disabled> Not Accepted </button>
                 {% endif %}
             </h4>
                <p class="card-text"> - written to {{ item.assigned_to }} as happened on {{ item.get_happened_on_display }}</p>
