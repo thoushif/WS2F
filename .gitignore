@@ -255,3 +255,11 @@ fabric.properties
 # Pyre type checker
 
 # End of https://www.gitignore.io/api/django,python,pycharm
+
+*.pyc
+*~
+__pycache__
+venv
+db.SQLITE3
+/static
+.DS_Store
