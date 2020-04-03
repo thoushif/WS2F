@@ -24,7 +24,7 @@ handler403 = 'manage_sy.views.handler403'
 handler400 = 'manage_sy.views.handler400'
 
 urlpatterns = [
-    path('home/', CardsInboxView.as_view(template_name='home.html'), name='home'),
+    path('/', CardsInboxView.as_view(template_name='home.html'), name='home'),
     path('admin/', admin.site.urls),
     path('manage_sy/', include('manage_sy.urls')),
     path('manage_sy/', include('django.contrib.auth.urls')),
