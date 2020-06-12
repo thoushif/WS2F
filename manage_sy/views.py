@@ -29,6 +29,7 @@ class SignUpView(CreateView):
         member = form.save(commit=False)
         email_id = form.cleaned_data.get('email')
         # check if this email id is any companion's email
+        orig_member = None
         if Member.objects.filter(companion_email=email_id).exists():
             orig_member = Member.objects.filter(companion_email=email_id).first()
             orig_member.companion_registered = True
@@ -37,6 +38,7 @@ class SignUpView(CreateView):
             member.companion_id = orig_member
             member.is_first_registered = False
             member.home_name = orig_member.home_name
+        if orig_member is not None:
             orig_member.save()
         member.save()
 
