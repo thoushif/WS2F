@@ -39,8 +39,8 @@ class SignUpView(CreateView):
             member.is_first_registered = False
             member.home_name = orig_member.home_name
         member.save()
-            if orig_member is not None:
-        orig_member.save()
+        if orig_member is not None:
+            orig_member.save()
 
 
         send_email([email_id])
