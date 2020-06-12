@@ -38,9 +38,10 @@ class SignUpView(CreateView):
             member.companion_id = orig_member
             member.is_first_registered = False
             member.home_name = orig_member.home_name
-        if orig_member is not None:
-            orig_member.save()
         member.save()
+            if orig_member is not None:
+        orig_member.save()
+
 
         send_email([email_id])
         return HttpResponseRedirect('/')
