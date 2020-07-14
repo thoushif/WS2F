@@ -83,9 +83,10 @@ WSGI_APPLICATION = 'WS2F.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'USER': 'thoushif',
-        'PASSWORD': 'mycleanlydb1',
-        'HOST': 'mycleanlydb.cqy5innwuaqp.us-east-2.rds.amazonaws.com',   # Or an IP Address that your DB is hosted on
+        'NAME':'allaboutapology$sorry',
+        'USER': 'allaboutapology',
+        'PASSWORD': 'roseflower',
+        'HOST': 'allaboutapology.mysql.pythonanywhere-services.com',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
 }
