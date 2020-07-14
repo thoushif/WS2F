@@ -84,8 +84,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
         'NAME': 'mycleanlydb',
-        'USER': 'thoushif',
-        'PASSWORD': 'beL0vely!',
+        'USER': 'mycleanlydb',
+        'PASSWORD': 'mycleanlydb1',
         'HOST': 'mycleanlydb.cqy5Innwuaqp.us-east-2.rds.amazonaws.com',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
