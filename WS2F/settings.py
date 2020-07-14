@@ -83,7 +83,6 @@ WSGI_APPLICATION = 'WS2F.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'cleanly_base',
         'USER': 'thoushif',
         'PASSWORD': 'mycleanlydb1',
         'HOST': 'mycleanlydb.cqy5innwuaqp.us-east-2.rds.amazonaws.com',   # Or an IP Address that your DB is hosted on
