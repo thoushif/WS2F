@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'mycleanlydb',
         'USER': 'mycleanlydb',
         'PASSWORD': 'mycleanlydb1',
-        'HOST': 'mycleanlydb.cqy5Innwuaqp.us-east-2.rds.amazonaws.com',   # Or an IP Address that your DB is hosted on
+        'HOST': 'mycleanlydb.cqy5innwuaqp.us-east-2.rds.amazonaws.com',   # Or an IP Address that your DB is hosted on
         'PORT': '3306',
     }
 }
