@@ -2,7 +2,7 @@
 
  <form action="{% url 'manage_sy:item_new'  %}" method="post"  onclose="return confirm('Do you really want to close before sending!?');">{% csrf_token %}
   <div class="modal-header">
-    <h5 class="modal-title" id="modalnewitemformTitle"> create your item below</h5>
+    <h5 class="modal-title" id="modalnewitemformTitle"> Requesting or confessing? fill it up..</h5>
 
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -16,5 +16,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" onclick="checkNewEditCancel()">Close</button>
-    <button type="submit" class="btn btn-primary">Send</button>
+    <button type="submit" class="btn btn-warning">Just Save, don't send yet</button>
+    {% comment %} <button type="submit" class="btn btn-success">Send</button> {% endcomment %}
   </div></form>

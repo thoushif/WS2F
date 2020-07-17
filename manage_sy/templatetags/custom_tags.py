@@ -7,6 +7,9 @@ from django.conf import settings
 def sort_by(queryset, order):
     return queryset.order_by(order)
 
+@register.filter
+def filter_active(queryset, active):
+    return queryset.filter(active=active)
 
 @register.simple_tag
 def time_of_day():

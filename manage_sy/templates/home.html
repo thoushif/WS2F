@@ -6,8 +6,9 @@
 {% block title %}Home{% endblock title %}
 {% load static %}
 {% block content %}
+    <h6>{%time_of_day%}</h6>
+
 <div class="jumbotron">
-    <h4>{%time_of_day%}</h4>
     {% if not user.is_authenticated %}
     <p class="lead">
             <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
@@ -51,30 +52,31 @@
     </p>
     {% else %}
     <div class="container">
-        <h2> {{ user.nickname }},</h2>
+        {% comment %} <h2> {{ user.nickname }},</h2> {% endcomment %}
         <h3>
              {% if user.companion_name  %}
                 {% if not cards_for_you_flow  %}
-               <i class="fas fa-share-square"></i>  Sorries you wrote <sup>({{user.syitem_set.count|default:"Nothing yet"}})</sup>!! <sub><a class="nav-item nav-link" href="{% url 'manage_sy:cards_for_you'%}">see what you got</a></sub>
-                <div class="float-right circle" data-toggle="modal" data-target="#modalnewitemform" data-backdrop="static" >
+               <i class="fas fa-share-square"></i>  Sorries you wrote <sup>({{user.syitem_set.count|default:"Nothing yet"}})</sup>!!
+                <div class="float-right circle" data-toggle="modal" data-target="#modalnewitemform" data-backdrop="static"  title="add a new apology note!">
                     <div class='horizontal-plus'></div>
                     <div class='vertical-plus'></div>
                 </div>
+
                 {% else %}
                     {% if user.companion_registered %}
-                       <i class="fas fa-inbox"></i>  your <i>{{user.companion_name}}</i> wrote <sup>({{companion_cards.count|default:"Nothing yet"}})</sup>!!<sub><a class="nav-item nav-link" href="{% url 'manage_sy:cards_by_you'%}">see what you wrote</a></sub>
+                       <i class="fas fa-inbox"></i> <i>{{user.companion_name}}</i> wrote <sup>({{companion_cards.count|default:"Nothing yet"}})</sup>!!<sub><a class="float-right" href="{% url 'manage_sy:cards_by_you'%}" title="see what you wrote"><i class="fas fa-share-square"></i></a></sub>
                     {% else %}
-            {{user.companion_name}} not yet registered, <a href="{% url 'manage_sy:companion_remind'%}"> remind</a>?
+            {{user.companion_name}} not yet registered, <a href="{% url 'manage_sy:companion_remind'%}"> send an invite</a>?
                     {% endif %}
                 {% endif %}
             {% else  %}
-                You did not have your other half added, add in <a href="{% url 'manage_sy:member_edit_add_companion' user.pk %}"> profile</a>
+              <small>  You did not have your other half added, you can add in <a href="{% url 'manage_sy:member_edit_add_companion' user.pk %}"> profile</a></small>
             {% endif %}
 
         </h3>
         <br>
         {% if not cards_for_you_flow %}
-        {% include "includes/sy_item.html" with items=user.syitem_set.all|sort_by:'-updated_date' only %}
+        {% include "includes/sy_item.html" with items=user.syitem_set|sort_by:'-updated_date' only %}
         {% else %}
             {% if user.companion_registered %}
                 {% include "includes/sy_item.html" with items=companion_cards only %}

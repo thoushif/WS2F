@@ -30,7 +30,7 @@
     <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
       <a class="navbar-brand" href="{% url 'home' %}">Sy System</a>
        {% if user.is_authenticated %}
-      <div class="nav-item nav-link" href="{% url 'manage_sy:cards_by_you'%}" title="Add a new card"  data-toggle="modal" data-target="#modalnewitemform"><i class="fas fa-plus-circle"></i></div>
+      {% comment %} <div class="nav-item nav-link" href="{% url 'manage_sy:cards_by_you'%}" title="Add a new card"  data-toggle="modal" data-target="#modalnewitemform"><i class="fas fa-plus-circle"></i></div> {% endcomment %}
       <a class="nav-item nav-link" href="{% url 'manage_sy:cards_for_you'%}"><i class="fas fa-inbox"></i> Cards for you</a>
       <a class="nav-item nav-link" href="{% url 'manage_sy:cards_by_you'%}"><i class="fas fa-share-square"></i>Cards by you</a>
       {% endif %}

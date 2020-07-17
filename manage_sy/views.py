@@ -50,12 +50,12 @@ class SignUpView(CreateView):
 def get_companion_cards(user_id):
     companion = Member.objects.filter(companion_id_id=user_id).first()
     if companion is not None:
-        return SyItem.objects.filter(owner_id=companion.id)
+        return SyItem.objects.filter(owner_id=companion.id,active=True) #inbox view only for those which are sent(active)
 
 
 def send_remind_email(request):
     email = Member.objects.filter(id=request.user.id).first().companion_email
-    remind_email([email])
+    remind_email([email], request.user.email)
     messages.success = "Reminder sent successfully!"
     return HttpResponse(render(request, 'home.html'))
 
@@ -105,7 +105,8 @@ class CompanionDetailView(LoginRequiredMixin, DetailView):
 class MemberUpdateView(LoginRequiredMixin, PermissionRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Member
     fields = (
-         'nickname', 'date_of_birth', 'gender', 'profile_pic', 'home_name')
+         'nickname', 'gender', 'profile_pic', 'home_name')
+
     template_name = 'member_edit.html'
     success_message = "Profile saved successfully"
 
@@ -121,7 +122,6 @@ class MemberUpdateCompanionView(LoginRequiredMixin, PermissionRequiredMixin, Suc
     fields = (
          'companion_name', 'companion_email')
     template_name = 'member_edit.html'
-    success_message = "Companion added successfully, they may have to register if not already do so!!"
 
     def get_success_url(self):
         return reverse('home')
@@ -155,6 +155,11 @@ def sy_item_reject_view(request, pk):
     sy_item.save()
     return HttpResponse(render(request, 'home.html'))
 
+def sy_item_save_view(request, pk):
+    sy_item = SyItem.objects.get(pk=pk)
+    sy_item.active = True
+    sy_item.save()
+    return HttpResponse(render(request, 'home.html'))
 
 def handler400(request, exception, template_name="400.html"):
     response = render(request, template_name)
@@ -198,7 +203,7 @@ class SyItemCreateView(CreateView):
     model = SyItem
     success_url = '/manage_sy/modal/item-new/'
     template_name = 'includes/modal-new-item-form.html'
-    fields = ('type', 'subType', 'name', 'happened_on', 'notes',)
+    fields = ('type', 'name', 'happened_on', 'notes',)
 
     widgets = {
         'type': forms.RadioSelect()
@@ -208,7 +213,7 @@ class SyItemCreateView(CreateView):
         form.instance.author = self.request.user
         sy_item = form.save(commit=False)
         sy_item.owner = Member.objects.filter(id=self.request.user.id).first()
-        sy_item.active = True
+        sy_item.active = False
         sy_item.color = sy_item.type
         sy_item.assigned_to = Member.objects.filter(id=self.request.user.id).first().companion_name
         sy_item.save()
@@ -219,8 +224,8 @@ class SyItemUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = SyItem
     # form = SyItemForm(instance=get_object_or_404(SyItem))
     template_name = 'includes/modal-update-item-form.html'
-    fields = ('name', 'type', 'happened_on', 'image_clue', 'notes', 'subType')
-    success_url = '/'
+    fields = ('name', 'type', 'happened_on', 'notes',)
+    success_url = '/manage_sy/cards-by-you/'
     success_message = "Item updated successfully"
 
     def form_valid(self, form):
@@ -234,9 +239,9 @@ def send_email(recipient_list):
     send_mail(subject, message, email_from, recipient_list )
 
 
-def remind_email(recipient_list):
-    subject = 'Reminder: Sign up here please at AAA - we can have our fun back'
+def remind_email(recipient_list, myemail):
+    subject = 'Sign up here please at AAA - we can have our fun back'
     message = ' Dear, I hope you join this site signing up. I feel this help us  connecting back in our lives. Even i' \
-              'f not lets have fun.  '
+              'f not lets have fun. add my email at companion_email...., companion name your wish!! ' + myemail
     email_from = settings.EMAIL_HOST_USER
     send_mail(subject, message, email_from, recipient_list )

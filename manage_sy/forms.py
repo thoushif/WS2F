@@ -8,7 +8,7 @@ class MemberCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm):
         model = Member
-        fields = ('username', 'email', 'first_name', 'last_name', 'nickname', 'date_of_birth', 'companion_email', 'companion_name', 'gender', 'home_name')
+        fields = ('username', 'email', 'first_name', 'last_name', 'nickname', 'companion_email', 'companion_name', 'gender', 'home_name')
         widgets = {
             'gender': forms.RadioSelect()
         }
@@ -23,12 +23,15 @@ class MemberChangeForm(UserChangeForm):
 
     class Meta:
         model = Member
-        fields = ('username', 'email', 'nickname', 'date_of_birth', 'companion_email', 'companion_name', 'gender', )
+        fields = ('username', 'email', 'nickname', 'companion_email', 'companion_name', 'gender', )
+        widgets = {
+            'gender': forms.RadioSelect()
+        }
 
 
 class SyItemForm(forms.ModelForm):
 
     class Meta:
         model = SyItem
-        fields = ('subType', 'name', 'assigned_to', 'type', 'happened_on', 'created_date', 'color', 'active', 'notes', 'owner', )
+        fields = ('name', 'assigned_to', 'type', 'happened_on', 'created_date', 'color', 'active', 'notes', 'owner', )
 

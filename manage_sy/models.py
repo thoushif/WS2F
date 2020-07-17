@@ -18,7 +18,6 @@ class Member(AbstractUser):
     ]
     email = models.EmailField(null=False, blank=False)
     nickname = models.CharField(max_length=50, default=' ', null=True, blank=True)
-    date_of_birth = models.DateField(blank=True, null=True)  # True makes this field optional
     companion_email = models.EmailField('companion_email', blank=True)
     companion_name = models.CharField(max_length=100, default=' ', null=True, blank=True)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICE, null=False, blank=False, default='-')
@@ -30,17 +29,6 @@ class Member(AbstractUser):
     companion_id = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     home_name = models.CharField(max_length=100, default=' ', null=True, blank=True)
 
-
-class ItemSubTypeDomain(models.Model):
-    ITEM_TYPE = [
-        ('R', 'Request For'),
-        ('C', 'Confess It'),
-    ]
-    type = models.CharField(max_length=10, choices=ITEM_TYPE, null=True, blank=True)
-    subType = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.subType
 
 class SyItem(models.Model):
     ITEM_TYPE = [
@@ -65,7 +53,7 @@ class SyItem(models.Model):
         on_delete=models.CASCADE,
     )
     assigned_to = models.CharField(max_length=100, default=' ')
-    type = models.CharField(max_length=10, choices=ITEM_TYPE, null=False, blank=False)
+    type = models.CharField(max_length=10, choices=ITEM_TYPE, null=False, blank=False, default= 'R')
     happened_on = models.CharField(max_length=10, choices=HAPPENED_ON_CHOICE, null=False, blank=False, default='-')
     created_date = models.DateTimeField(
         default=timezone.now)
@@ -75,8 +63,6 @@ class SyItem(models.Model):
     image_clue = models.CharField(max_length=1000,
                                    default="static/manage_sy/profilepics/profile_avatar_contact_account_user_default-neutral.png",
                                    blank=True)
-    subType = models.ForeignKey(ItemSubTypeDomain, on_delete=models.DO_NOTHING, related_name='request_types', null=True, blank=True)
-
     notes = models.TextField()
     response_type = models.CharField(max_length=10, choices=RESPONSE_TYPE, null=True, blank=True)
     response_date = models.DateTimeField(auto_now_add=True, null=True)

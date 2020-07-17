@@ -17,8 +17,11 @@
   <h1>{{ member.nickname }} </h1>
   <p class="profile-title">  <p>{% if not isCompanionProfile %} {{ user.username }}
     {% else %} {{ companion_name }}
-    {% endif  %} | {{ member.email }}  </p>
-  <p class="profile-title"> {{ member.gender }} | {{ member.date_of_birth }} </p>
+    {% endif  %} | {{ member.email }}   |
+   {% if member.gender == 'M' %} <i class="fas fa-male"></i>
+   {% elif member.gender == 'F' %}<i class="fas fa-female"></i>
+  {% else %} <i class="fas fa-neuter"></i>
+    {% endif  %}</p>
   <p>{% if member.is_first_registered %} Created <i>  {{ member.home_name }}  </i>
     {% else %} Joined <i> {{ user.home_name }} </i>
     {% endif  %}

@@ -1,18 +1,26 @@
 {% load static %}
 
 
-<div class="card-deck card-group-scroll" >
+<div class="card-columns" >
     {% for item in items %}
         <div class="card border-dark mb-2" data-toggle="modal" data-target="#exampleModalCenter" data-whatever="{{item.id}}">
 <!--          <img class="card-img-top img-fluid" src="" alt="Card image cap">-->
           <div class="card-body">
-            <h4 class="card-title" style='background-color:  #c8e9ee;border-bottom: 2px solid #999; '>{{ item.name }}
-                {% if item.response_type == 'Y' %}
-                    <button type="button" class="btn btn-outline-success btn-sm float-right" disabled>  Accepted </button>
-                {% elif item.response_type == 'N' %}
-                    <button type="button" class="btn btn-outline-danger btn-sm float-right" disabled> Not Accepted </button>
+            <h6 class="card-title" style='background-color:  #c8e9ee;border-bottom: 2px solid #999; '>{{ item.name }}
+                {% if item.active != True %}        
+                    <i class="far fa-edit float-right"   data-toggle="modal" data-target="#modalnewitemform" data-whatever="{{item.id}}"></i> 
                 {% endif %}
-            </h4>
+
+                {% if item.response_type == None %}
+                      <img src="{% static 'manage_sy/icons/waiting.png' %}" title="sent and waiting for reply" style="width:10%;float:right"> 
+                {% elif item.response_type == 'Y' %}
+                    {% comment %} <button type="button" class="btn btn-outline-success btn-sm " disabled>  Accepted </button> {% endcomment %}
+                    <span style="background:green;float:right;color:white">Accepted</span>
+                {% elif item.response_type == 'N' %}
+                    {% comment %} <button type="button" class="btn btn-outline-danger btn-sm float-right" disabled> Not Accepted </button> {% endcomment %}
+                    <span style="background:maroon;float:right;color:white">Rejected</span>
+                {% endif %}
+            </h6>
                <p class="card-text"> - written to {{ item.assigned_to }} as happened on {{ item.get_happened_on_display }}</p>
             <p class="card-text"><small class="text-muted">{{ item.created_date }}</small></p>
           </div>

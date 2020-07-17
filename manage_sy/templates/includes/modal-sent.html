@@ -1,7 +1,13 @@
 
 
   <div class="modal-header">
-    <h5 class="modal-title" id="exampleModalLongTitle">{{ item.name }} <small>as happened  {{ item.get_happened_on_display|lower }}</small> </h5>
+    <h5 class="modal-title" id="exampleModalLongTitle">{{item.owner.nickname}} 
+    
+    {% if item.type != "R" %} 
+    apologizing regarding
+    {% else %} asking to apologize for {% endif %}
+    
+     '{{ item.name }}' <small>as happened on {{ item.get_happened_on_display|lower }}</small> </h5>
 
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -20,8 +26,12 @@
 
   {% if item.owner.id == user_id %}
         {% if item.response_type is None %}
-            <button type="button" class="btn btn-secondary">Remind</button>
+          {% if item.active %}  <button type="button" class="btn btn-warning">Remind</button> 
+           {%else%} 
             <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#modalnewitemform" data-whatever="{{item.id}}">Edit</button>
+
+ <a href="{% url 'manage_sy:item_save' item.id %}"> <button type="button" class="btn btn-success">
+                     Send </button></a>            {%endif%}
         {% else %}
             <h5> {{item.assigned_to }} {{item.get_response_type_display }} </h5>
             <small>on {{item.response_date }} </small>
@@ -31,8 +41,12 @@
          <h5> You have {{item.get_response_type_display }} </h5>
             <small>on {{item.response_date }} </small>
         {% else %}
-          <a href="{% url 'manage_sy:item_accept' item.id %}"> <button type="button" class="btn btn-success"><i class="fas fa-check-circle"></i> Accepted!!! </button></a>
-          <a href="{% url 'manage_sy:item_reject' item.id %}"> <button type="button" class="btn btn-danger"><i class="fas fa-times-circle"></i> Not Accepted </button></a>
+          <a href="{% url 'manage_sy:item_accept' item.id %}"> <button type="button" class="btn btn-success"><i class="fas fa-check-circle"></i>
+                    {% if item.type != "R" %} Accepted!!! {% else %} My mistake, I'm sorry {% endif %}
+                      </button></a>
+          <a href="{% url 'manage_sy:item_reject' item.id %}"> <button type="button" class="btn btn-danger"><i class="fas fa-times-circle"></i> 
+                    {% if item.type != "R" %} Not Accepted!!! {% else %} No, Not sorry! {% endif %}
+                      </button></a>
         {% endif %}
   {% endif %}
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

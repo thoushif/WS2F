@@ -1,4 +1,5 @@
-
+{% load crispy_forms_tags %}
+  
  <form  action="{% url 'manage_sy:item_edit' syitem.id %}" method="post">{% csrf_token %}
   <div class="modal-header">
     <h5 class="modal-title" id="modalnewitemformTitle"> update your item here {{ syitem.id }}  </h5>
@@ -9,11 +10,15 @@
   </div>
   <div class="modal-body">
 
- {% include 'includes/bs4_form_template.html' with form=form %}
-
+ {% comment %} {% include 'includes/bs4_form_template.html' with form=form %} {% endcomment %}
+{{ form|crispy }}
 
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-    <button type="submit" class="btn btn-primary">Send</button>
+    {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-primary">Send</button> {% endcomment %}
+        <button type="button" class="btn btn-secondary" onclick="checkNewEditCancel()">Close</button>
+    <button type="submit" class="btn btn-warning">Just Save, don't send yet</button>
+    <a href="{% url 'manage_sy:item_save' syitem.id %}"> <button type="button" class="btn btn-success">
+                     Send </button></a>
   </div></form>
