@@ -439,7 +439,7 @@ class SyItemUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     # form = SyItemForm(instance=get_object_or_404(SyItem))
     template_name = 'includes/modal-update-item-form.html'
     fields = ('name', 'type', 'happened_on', 'notes',)
-    success_url = '/manage_sy/cards-by-you/'
+    success_url = '/manage_sy/cards-by-you-all/'
     success_message = "Item updated successfully"
 
     def form_valid(self, form):
