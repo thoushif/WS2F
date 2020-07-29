@@ -23,8 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ccyssw#zf#b@o$2g)p(04r8!ng^7zp3gjxgz_&xz$#bdqmhd-3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 #
 ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = ['allaboutapology.pythonanywhere.com', 'www.allaboutapology.pythonanywhere.com', '*']
