@@ -24,9 +24,11 @@ class Member(AbstractUser):
     profile_pic = models.CharField(max_length=100,
                                    default="static/manage_sy/profilepics/profile_avatar_contact_account_user_default-neutral.png",
                                    blank=True)
-    is_first_registered = models.BooleanField(default=True)
+    is_first_registered = models.BooleanField(default=False)
     companion_registered = models.BooleanField(default=False)
     companion_id = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    companion_invitation_code = models.CharField(max_length=12, default=' ', null=True, blank=True)
+    
     home_name = models.CharField(max_length=100, default=' ', null=True, blank=True)
 
 

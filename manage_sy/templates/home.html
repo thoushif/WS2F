@@ -1,98 +1,251 @@
 <!doctype html>
 <html lang="en">
-{% extends 'base.html' %}
-{% load custom_tags %}
-
-{% block title %}Home{% endblock title %}
-{% load static %}
-{% block content %}
-    <h6>{%time_of_day%}</h6>
-
+{% extends 'base.html' %} {% load custom_tags %} {% block title %}Home{% endblock title %} {% load static %} {% block content %}
 <div class="jumbotron">
+    <table style="margin-top:-55px; width: 100%;">
+        <tr>
+            <td>
+                <h6>{%time_of_day user.nickname%}</h6>
+            </td>
+            <td style="text-align: right;width: 50%;">
+                <div aria-live="polite" aria-atomic="true" style="position: relative;margin:0px 50px 0px 0px;">
+                    <div class="toast" style="position: absolute; bottom: 0; right: 0;" data-delay="2000">
+                        {% for message in messages %}
+                        <div class="toast-header">
+                            <strong class="mr-auto">
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                {{ message }}</strong>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
     {% if not user.is_authenticated %}
     <p class="lead">
-            <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-              <ol class="carousel-indicators">
+        <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
                 <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
                 <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
                 <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
-              </ol>
-              <div class="carousel-inner">
+            </ol>
+            <div class="carousel-inner">
                 <div class="carousel-item active">
-                  <img src="{% static 'manage_sy/icons/sorry-keyboard.jpg' %}" class="d-block w-100 h-50" alt=" SignUp ">
-                  <div class="carousel-caption d-none d-md-block">
-                    <h5>Scared to Apologize??</h5>
-                    <p><a href="{% url 'manage_sy:signup' %}"> Sign up and send a sorry card!! </a></p>
-                  </div>
+                    <img src="{% static 'manage_sy/icons/sorry-keyboard.jpg' %}" class="d-block w-100 h-50" alt=" SignUp ">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Scared to Apologize??</h5>
+                        <p><a href="{% url 'manage_sy:signup' %}"> Sign up and send a sorry card!! </a></p>
+                    </div>
                 </div>
                 <div class="carousel-item">
-                  <img src="{% static 'manage_sy/icons/TellSorry.jpg' %}" class="d-block w-100 h-50" alt="Tell a sorry">
-                  <div class="carousel-caption d-none d-md-block">
-                    <h5>Create a sorry card!! </h5>
-                    <p>Confess for what you have done...or.what you have not done yet!!.</p>
-                  </div>
+                    <img src="{% static 'manage_sy/icons/TellSorry.jpg' %}" class="d-block w-100 h-50" alt="Tell a sorry">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Create a sorry card!! </h5>
+                        <p>Confess for what you have done...or.what you have not done yet!!.</p>
+                    </div>
                 </div>
                 <div class="carousel-item">
-                  <img src="{% static 'manage_sy/icons/AskForSorry.jpg' %}" class="d-block w-100 h-50" alt="Ask for a sorry" width="25%">
-                  <div class="carousel-caption d-none d-md-block">
-                    <h5>Ask or Demand a Sorry!!</h5>
-                    <p>Feeling like wanting an apology..couldn't ask direclty?? .</p>
-                  </div>
+                    <img src="{% static 'manage_sy/icons/AskForSorry.jpg' %}" class="d-block w-100 h-50" alt="Ask for a sorry" width="25%">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>Ask or Demand a Sorry!!</h5>
+                        <p>Feeling like wanting an apology..couldn't ask direclty?? .</p>
+                    </div>
                 </div>
-              </div>
-              <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="sr-only">Previous</span>
-              </a>
-              <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
-              </a>
-            </div>
+            </a>
+        </div>
     </p>
     {% else %}
+    <!-- if user autheticated -->
     <div class="container">
-        {% comment %} <h2> {{ user.nickname }},</h2> {% endcomment %}
-        <h3>
-             {% if user.companion_name  %}
-                {% if not cards_for_you_flow  %}
-               <i class="fas fa-share-square"></i>  Sorries you wrote <sup>({{user.syitem_set.count|default:"Nothing yet"}})</sup>!!
-                <div class="float-right circle" data-toggle="modal" data-target="#modalnewitemform" data-backdrop="static"  title="add a new apology note!">
-                    <div class='horizontal-plus'></div>
-                    <div class='vertical-plus'></div>
-                </div>
+        {% comment %}
+        <h2> {{ user.nickname }},</h2> {% endcomment %}
+        <h4> {% if user.companion_name %}
+                  {{heading|title}} 
+                  {% if not cards_for_you_flow %}
 
-                {% else %}
-                    {% if user.companion_registered %}
-                       <i class="fas fa-inbox"></i> <i>{{user.companion_name}}</i> wrote <sup>({{companion_cards.count|default:"Nothing yet"}})</sup>!!<sub><a class="float-right" href="{% url 'manage_sy:cards_by_you'%}" title="see what you wrote"><i class="fas fa-share-square"></i></a></sub>
-                    {% else %}
-            {{user.companion_name}} not yet registered, <a href="{% url 'manage_sy:companion_remind'%}"> send an invite</a>?
-                    {% endif %}
-                {% endif %}
-            {% else  %}
-              <small>  You did not have your other half added, you can add in <a href="{% url 'manage_sy:member_edit_add_companion' user.pk %}"> profile</a></small>
-            {% endif %}
+                          <i class="fas fa-share-square"></i>
+                          <sup><small>{{cards_count}}</small></sup>
 
-        </h3>
-        <br>
-        {% if not cards_for_you_flow %}
-        {% include "includes/sy_item.html" with items=user.syitem_set|sort_by:'-updated_date' only %}
-        {% else %}
-            {% if user.companion_registered %}
-                {% include "includes/sy_item.html" with items=companion_cards only %}
-            {% endif %}
+                          <span class="small float-right">
+                      <div class="d-flex">
+
+
+                        <div class="dropdown mr-1">
+                          <button type="button" class="btn btn-primary btn-sm">
+                            <a class="text-white" href="{% url 'manage_sy:cards_by_you_slug' 'drafts'%}"><i class="fas fa-edit"></i>
+                              {{draft_count}}</a>
+                          </button>
+                          <button type="button" class="btn btn-primary btn-sm">
+                            <a class="text-white" href="{% url 'manage_sy:cards_by_you_slug' 'to-respond'%}"
+                              title="Waiting for {{user.companion_name}}'s reply!"><i class="fas fa-user-clock"></i>
+                            </a>
+                          </button>
+                          <button type="button" class="btn btn-primary btn-sm dropdown-toggle " id="dropdownMenuOffset"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="10,5" title="Show">
+                            <i class="fas fa-eye"></i>
+                          </button>
+                          <button type="button" class="btn btn-primary btn-sm active focus" aria-pressed="true">
+                            <a class="text-white" href="{% url 'manage_sy:cards_by_you'%}"><i class="fas fa-share-square"></i>
+                              Sent cards</a>
+                          </button>
+                          <button type="button" class="btn btn-primary btn-sm">
+                            <a class="text-white" href="{% url 'manage_sy:cards_for_you'%}"><i class="fas fa-inbox"></i>
+                              Received cards</a>
+                          </button>
+                          <!-- <button type="button" class="btn btn-primary btn-sm">
+                            <a class="text-white" href="{% url 'manage_sy:cards_for_you_slug' 'to-respond'%}"><i class="fas fa-reply"></i>
+                              Respond</a>
+                          </button> -->
+
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
+                            <a class="dropdown-item" href="{% url 'manage_sy:cards_by_you_slug' 'accepted'%}"><i
+                                class="fas fa-share-square"></i> Accepted by {{ user.companion_name}}</a>
+                            <a class="dropdown-item" href="{% url 'manage_sy:cards_by_you_slug' 'rejected'%}"><i
+                                class="fas fa-share-square"></i> Rejected by {{ user.companion_name}}</a>
+                          </div>
+
+                        </div>
+
+                        <!-- <div class="float-right" data-toggle="modal" data-target="#modalnewitemform" data-backdrop="static"
+                        title="add a new apology note!">
+                        <a href="#"><i class="fas fa-plus-circle fa-2x"></i></a> 
+                        </div> -->
+
+
+
+                        <div class="addctrlplus float-right" id="addctrlplus">
+                          <a href="#" ><i class="fas fa-plus-circle fa-2x" ></i></a>
+                        </div>
+
+                        <div id="addctrlfaceddev" class="addctrlfaceddev" style="display: none;">
+                          <span id="closeButton"><i class="fas fa-window-close" id="closeButton"></i></span>
+                          <div class="float-right" d data-toggle="modal" data-target="#modalnewitemform" data-backdrop="static" data-apologytype="R" title="ask for the apology note!">
+                              <a href="#"><i class="far fa-meh  fa-10x"></i></a>
+                              <p style="text-align: center;">Asking to Apologize..?</p>
+                          </div>
+                          <div class="float-right" data-toggle="modal" data-target="#modalnewitemform" data-backdrop="static" data-apologytype="C" title="add a new apology note!">
+                              <a href="#"><i class="far fa-frown-open  fa-10x"></i></a>
+                              <p style="text-align: center;">Apologizing? </p>
+                          </div>
+
+
+                  </div>
+                  </span>
+                  {% else %} <!-- if   cards_for_you_flow   -->
+                              {% if user.companion_registered %}
+                                  <i class="fas fa-inbox"></i> <sup><small>{{companion_cards_count}}</small></sup>
+                                  <span class="small float-right">
+                                    <sub></sub>
+
+                                    <div class="d-flex">
+
+
+
+                                      <div class="dropdown mr-1">
+                                        <button type="button" class="btn btn-primary btn-sm">
+                                          <a class="text-white" href="{% url 'manage_sy:cards_for_you_slug' 'to-respond'%}"><i
+                                              class="fas fa-reply"></i>
+                                            {{to_respond_count}}</a>
+
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm  dropdown-toggle" id="dropdownMenuOffset"
+                                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="10,5" title="Show">
+                                          <i class="fas fa-eye"></i>
+                                        </button>
+
+                                        <button type="button" class="btn btn-primary btn-sm">
+                                          <a class="text-white" href="{% url 'manage_sy:cards_by_you'%}"><i class="fas fa-share-square"></i>
+                                            Sent cards</a>
+                                        </button>
+                                        <button type="button" class="btn btn-primary btn-sm active focus" aria-pressed="true">
+                                          <a class="text-white" href="{% url 'manage_sy:cards_for_you'%}"><i class="fas fa-inbox"></i>
+                                            Received cards</a>
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
+                                          <a class="dropdown-item" href="{% url 'manage_sy:cards_for_you'%}" title="see what you sent"><i
+                                              class="fas fa-inbox"></i> All Cards</a>
+                                          <a class="dropdown-item" href="{% url 'manage_sy:cards_for_you_slug' 'accepted'%}"
+                                            title="see what you wrote"><i class="fas fa-inbox"></i> All Accepted by you</a>
+                                          <a class="dropdown-item" href="{% url 'manage_sy:cards_for_you_slug' 'rejected'%}"
+                                            title="see what you wrote"><i class="fas fa-inbox"></i> All Rejected by you</a>
+                                        </div>
+                                      </div>
+                                      <!-- <div class="float-right" data-toggle="modal" data-target="#modalnewitemform" data-backdrop="static"
+                                        title="add a new apology note!">
+                                        <a href="#"><i class="fas fa-plus-circle fa-2x"></i></a>
+                                      </div> -->
+                                      <div class="addctrlplus float-right" id="addctrlplus">
+                                        <a href="#" ><i class="fas fa-plus-circle fa-2x" ></i></a>
+                                      </div>
+
+                                      
+                                      <div id="addctrlfaceddev" class="addctrlfaceddev" style="display: none;">
+                                        <span id="closeButton"><i class="fas fa-window-close" id="closeButton"></i></span>
+                                  <div class="float-right" d data-toggle="modal" data-target="#modalnewitemform" data-backdrop="static" data-apologytype="R" title="ask for the apology note!">
+                                    <a href="#"><i class="far fa-meh  fa-10x"></i></a>
+                                    <p style="text-align: center;">Asking to Apologize..?</p>
+                                  </div>
+                                  <div class="float-right" data-toggle="modal" data-target="#modalnewitemform" data-backdrop="static" data-apologytype="C" title="add a new apology note!">
+                                    <a href="#"><i class="far fa-frown-open  fa-10x"></i></a>
+                                    <p style="text-align: center;">Apologizing? </p>
+                                  </div>
+                                  </div>
+                                  </div>
+                                  </span>
+                              {% else %}
+                                {{user.companion_name}} not yet registered, we can send an <a href="{% url 'manage_sy:companion_remind'%}"> email </a>, shall we?
+                                <br><small>You can share this code instead <span id="inv_code">{{user.companion_invitation_code}}</span></small>
+                                <span id="inv_code_copy"><i class="fas fa-paste" ></i></span>
+                              {% endif %} 
+                {% endif %} <!-- if   cards_for_you_flow   -->
+              {% else %}
+              <small> You did not have your other half added, you can add in <a href="{% url 'manage_sy:member_edit_add_companion' user.pk %}"> profile</a></small>
+           {% endif %}
+
+</h4>
+
+<br> {% if not cards_for_you_flow %}
+<div class="progress" style="height: 2px;margin-top: -25px;margin-bottom: 5px;opacity: 0.85;">
+    <div class="progress-bar bg-success" role="progressbar" style='width: {{cards|filter_response:"Y"}}%' aria-valuenow='width: {{cards|filter_response:"Y"}}' aria-valuemin="0" aria-valuemax='{{cards|filter_response:"Any"}}'></div>
+    <div class="progress-bar bg-danger" role="progressbar" style='width: {{cards|filter_response:"N"}}%' aria-valuenow='width: {{cards|filter_response:"N"}}' aria-valuemin="0" aria-valuemax='{{cards|filter_response:"Any"}}'></div>
+
+</div>
+        {% if cards.count == 0%}
+        <span style="float: right;" class="blinker"> Create a new card here..<i class="fas fa-arrow-circle-up"></i></span> {%endif %} {% include "includes/sy_item.html" with items=cards user=user only %} {% else %} {% if user.companion_registered %}
+        <div class="progress" style="height: 2px;margin-top: -25px;margin-bottom: 5px;opacity: 0.85;">
+            <div class="progress-bar bg-success opacity-4" role="progressbar" style='width: {{companion_cards|filter_response:"Y"}}%' aria-valuenow='width: {{companion_cards|filter_response:"Y"}}' aria-valuemin="0" aria-valuemax='{{companion_cards|filter_response:"Any"}}'></div>
+            <div class="progress-bar bg-danger opacity-4" role="progressbar" style='width: {{companion_cards|filter_response:"N"}}%' aria-valuenow='width: {{companion_cards|filter_response:"N"}}' aria-valuemin="0" aria-valuemax='{{companion_cards|filter_response:"Any"}}'></div>
+
+        </div>
+        {% include "includes/sy_item.html" with items=companion_cards user=user only %}
+
         {% endif %}
-    </div>
-    {% endif %}
+
+ {% endif %}
+</div>
+{% endif %}
 </div>
 
-<div class="modal fade" id="modalnewitemform" tabindex="-1" role="dialog" aria-labelledby="modalnewitemformTitle" aria-hidden="true" >
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content" id="new-item-form">
 
+<div class="modal fade" id="modalnewitemform" tabindex="-1" role="dialog" aria-labelledby="modalnewitemformTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" id="new-item-form">
+
+        </div>
     </div>
-  </div>
 </div>
 
+       
 {% endblock content %}
+
 </html>

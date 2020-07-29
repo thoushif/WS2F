@@ -2,7 +2,7 @@
   
  <form  action="{% url 'manage_sy:item_edit' syitem.id %}" method="post">{% csrf_token %}
   <div class="modal-header">
-    <h5 class="modal-title" id="modalnewitemformTitle"> update your item here {{ syitem.id }}  </h5>
+    <h5 class="modal-title" id="modalnewitemformTitle"> edit and send..  {{ syitem.id }}  </h5>
 
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>

@@ -7,7 +7,7 @@
     apologizing regarding
     {% else %} asking to apologize for {% endif %}
     
-     '{{ item.name }}' <small>as happened on {{ item.get_happened_on_display|lower }}</small> </h5>
+     '{{ item.name }}'  </h5>
 
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
@@ -15,9 +15,8 @@
   </div>
   <div class="modal-body">
 
-              <p class="card-text">  </p>
               <p class="card-text">{{ item.notes }}</p>
-        <div class="float-right"> <span>- written to {{ item.assigned_to }}</span></div>
+        <div class="float-right"> <small>as happened on {{ item.get_happened_on_display|lower }}</small></div>
         <p class="card-text"><small class="text-muted">{{ item.updated_date }}</small></p>
   </div>
   <div class="modal-footer {{item.color}}" style="opacity:60%;color:white;" >
@@ -26,7 +25,7 @@
 
   {% if item.owner.id == user_id %}
         {% if item.response_type is None %}
-          {% if item.active %}  <button type="button" class="btn btn-warning">Remind</button> 
+          {% if item.active %} <a href="{% url 'manage_sy:card_remind' %}"> <button type="button" class="btn btn-warning"> Remind</button> </a>
            {%else%} 
             <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#modalnewitemform" data-whatever="{{item.id}}">Edit</button>
 

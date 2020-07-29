@@ -1,91 +1,233 @@
 .bg-dark {
-  background-color: #17a2b8!important;
+    background-color: #17a2b8!important;
 }
 
 .jumbotron {
     background-color: #c8e9ee;
+    margin-top: 0;
 }
-.nav-item{
+
+.nav-item {
     color: white;
+    /* text-decoration: underline; */
 }
+
+.navbar-brand {
+    /* font-family: Coronetscript, cursive;  */
+    text-shadow: 1px 1px 1px #000, 2px 2px 4px #c8e9ee;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    font-size: 25px;
+    letter-spacing: 2px;
+    word-spacing: 2px;
+    color: #c8e9ee;
+    font-weight: normal;
+    text-decoration: none;
+    font-style: normal;
+    font-variant: normal;
+    text-transform: none;
+}
+
 @media (min-width: 576px) {
     .card-deck.card-group-scroll {
         overflow-x: auto;
         flex-wrap: nowrap;
     }
-
-    .card-deck.card-group-scroll > .card {
+    .card-deck.card-group-scroll>.card {
         flex-basis: 35%;
     }
-
-
 }
+
+a.disabled {
+    /* Make the disabled links grayish*/
+    color: gray;
+    /* And disable the pointer events */
+    pointer-events: none;
+}
+
+.blinker {
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    25% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.5;
+        text-decoration: underline;
+    }
+}
+
+.form-check-label {
+    display: none;
+}
+
+.invalid-feedback {
+    display: none;
+}
+
+#addctrlfaceddev {
+    position: fixed;
+    /* or absolute */
+    top: 30%;
+    left: 30%;
+    z-index: 1;
+    background-color: #c8e9ee;
+    border: 2px solid #17a2b8;
+    border-top-left-radius: 15px;
+    padding: 20px;
+}
+
+​ .fragment {
+    position: relative;
+}
+
+#closeButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#error_1_id_type {
+    float: right;
+}
+
+
 /* for the + sign */
+
 .circle {
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  background-color: rgb(44,108,128)
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background-color: rgb(44, 108, 128)
 }
 
 .horizontal-plus {
-  position: relative;
-  background-color: #FFFFFF;
-  width: 50%;
-  height: 12.5%;
-  left: 25%;
-  top: 43.75%;
+    position: relative;
+    background-color: #FFFFFF;
+    width: 50%;
+    height: 12.5%;
+    left: 25%;
+    top: 43.75%;
 }
+
 .vertical-plus {
-  position: relative;
-  background-color: #FFFFFF;
-  width: 12.5%;
-  height: 50%;
-  left: 43.75%;
-  top: 12.5%;
+    position: relative;
+    background-color: #FFFFFF;
+    width: 12.5%;
+    height: 50%;
+    left: 43.75%;
+    top: 12.5%;
 }
+
+
 /* END for the + sign */
-.toast-header{
- background-color: #c8e9ee;
+
+.toast-header {
+    background-color: #c8e9ee;
+}
+
+.card-body {
+    cursor: pointer;
 }
 
 .profile-card {
-  box-shadow: 0 4px 8px 0 #17a2b8;
-  max-width: 300px;
-  margin: auto;
-  text-align: center;
+    box-shadow: 0 4px 8px 0 #17a2b8;
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
 }
 
 .profile-title {
-  color: grey;
-  font-size: 18px;
+    color: grey;
+    font-size: 18px;
 }
 
-
-
 .profile-card button {
-  border: none;
-  outline: 0;
-  display: inline-block;
-  padding: 8px;
-  color: black;
-  background-color:  #c8e9ee;
-  text-align: center;
-  cursor: pointer;
-  width: 100%;
-  font-size: 18px;
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: black;
+    background-color: #c8e9ee;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
 }
 
 .profile-card a {
-  text-decoration: none;
-  font-size: 22px;
-  color: black;
+    text-decoration: none;
+    font-size: 22px;
+    color: black;
 }
 
-.profile-card button:hover, .profile-card a:hover {
-  opacity: 0.7;
+.profile-card button:hover,
+.profile-card a:hover {
+    opacity: 0.7;
 }
 
-.carousel-item > img {
-   height: 400px;
+.carousel-item>img {
+    height: 400px;
+}
+
+table.blueTable {
+    /* border: 0px solid rgb(117, 123, 124); */
+    background-color: #EEEEEE;
+    width: 100%;
+    text-align: center;
+    /* border-collapse: collapse; */
+}
+
+table.blueTable th {
+    border: 1px solid #AAAAAA;
+    padding: 3px 2px;
+}
+
+table.blueTable thead {
+    background: #17a2b8;
+    background: -moz-linear-gradient(top, #51b9ca 0%, #2eabbf 66%, #17a2b8 100%);
+    background: -webkit-linear-gradient(top, #51b9ca 0%, #2eabbf 66%, #17a2b8 100%);
+    background: linear-gradient(to bottom, #51b9ca 0%, #2eabbf 66%, #17a2b8 100%);
+}
+
+table.blueTable thead th {
+    font-size: 18px;
+    font-weight: normal;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+html {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    position: relative;
+    margin: 0;
+    padding-bottom: 6rem;
+    min-height: 100%;
+}
+
+.footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    background-image: linear-gradient(white, #c8e9ee);
+    text-align: center;
+    /* font-family: "Helvetica Neue", Arial, sans-serif; */
+}
+
+.footer-copyright {
+    color: #17a2b8;
+    text-decoration: wavy;
 }

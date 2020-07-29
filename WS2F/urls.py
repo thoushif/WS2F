@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import path, include
 from django.contrib import admin
-from manage_sy.views import CardsInboxView
+from manage_sy.views import CardsInboxView, CardsPostedView
 
 
 handler404 = 'manage_sy.views.handler404'

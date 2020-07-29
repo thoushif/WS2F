@@ -1,8 +1,24 @@
 {% load crispy_forms_tags %}
+{% load static %}
 
- <form action="{% url 'manage_sy:item_new'  %}" method="post"  onclose="return confirm('Do you really want to close before sending!?');">{% csrf_token %}
+ <form action="{% url 'manage_sy:item_new' view.kwargs.slug %}" method="post"  onclose="return confirm('Do you really want to close before sending!?');">{% csrf_token %}
   <div class="modal-header">
-    <h5 class="modal-title" id="modalnewitemformTitle"> Requesting or confessing? fill it up..</h5>
+    <h5 class="modal-title" id="modalnewitemformTitle"> 
+      <div style="display: flex;">
+    {% if view.kwargs.slug == 'R' %}
+    
+    
+      <img src="{% static 'manage_sy/icons/AskForSorry.gif' %}" alt="profile_pic" style="width:30%;vertical-align:middle">
+     <span style="">  Requesting {{user.companion_name}} an apology...</span>
+    {% else %}
+    
+    
+      <img src="{% static 'manage_sy/icons/TellSorry.gif' %}" alt="profile_pic" style="width:30%;vertical-align:middle">
+       <span style="">  Confessing an apology to {{user.companion_name}}...</span>
+
+    {% endif %}
+      </div>
+    </h5>
 
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
