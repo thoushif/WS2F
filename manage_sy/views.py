@@ -439,7 +439,7 @@ class SyItemUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     # form = SyItemForm(instance=get_object_or_404(SyItem))
     template_name = 'includes/modal-update-item-form.html'
     fields = ('name', 'type', 'happened_on', 'notes',)
-    success_url = '/manage_sy/cards-by-you-all/'
+    success_url = '/manage_sy/cards-by-you/'
     success_message = "Item updated successfully"
 
     def form_valid(self, form):
@@ -451,7 +451,7 @@ def send_email(member, recipient_list, first_joined):
     # message = ' it  means a world to us '
     email_from = settings.EMAIL_HOST_USER
     # send_mail(subject, message, email_from, recipient_list)
-    subject = 'Thanks for signinup at All About Apology - its all your now'
+    subject = 'Thanks for signinup at All About Apology - its all yours now!'
     html_message = render_to_string('email-templates/user-signup-thanks.html', {'member': member,'first_joined':first_joined})
     plain_message = strip_tags(html_message)
 
@@ -463,8 +463,8 @@ def remind_email(user,recipient_list, myemail):
     email_from = settings.EMAIL_HOST_USER
     # send_mail(subject, message, email_from, recipient_list)
         
-    subject = 'Sign up here please at All About Apology'
-    html_message = render_to_string('email-templates/sy_item_mail_template.html', {'user': user})
+    subject = 'Sign up here at All About Apology - <invitation code included>'
+    html_message = render_to_string('email-templates/companion_invite.html', {'user': user})
     plain_message = strip_tags(html_message)
 
     mail.send_mail(subject, plain_message, email_from, recipient_list, html_message=html_message)
